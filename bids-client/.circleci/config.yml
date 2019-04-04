@@ -1,0 +1,93 @@
+version: 2
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy-wheel:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+)+(\.(a|b|dev|rc)[0-9]+)?/
+            branches:
+              ignore: /.*/
+jobs:
+  build:
+    docker:
+      - image: python:2.7
+    steps:
+      - checkout
+      - run: 
+          name: PIP Install
+          command: |
+            pip install -r requirements.txt
+            pip install -r tests/requirements.txt
+
+      - run: 
+          name: Unit Tests
+          command: ./tests/bin/tests.sh
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # Build and push docker image
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            wget -O - https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz | tar xz -C /tmp
+            mv /tmp/docker/* /usr/bin
+      
+      - run: 
+          name: Build Docker Image 
+          command: |
+            docker build -t bids-client .
+
+      - deploy: 
+          name: Deploy Docker Image
+          command: |
+            if [ "$DOCKER_USER" ]; then
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+              if [ "$CIRCLE_TAG" ]; then
+                docker tag bids-client flywheel/bids-client:${CIRCLE_TAG}
+                docker push flywheel/bids-client:${CIRCLE_TAG}
+                # Also push to minor version (e.g. 0.3.3 -> 0.3)
+                (
+                  IFS='.' read -ra VER_PARTS <<< "${CIRCLE_TAG}"
+                  if [ "3" -eq "${#VER_PARTS[@]}" ]; then
+                    MINOR_TAG="${VER_PARTS[0]}.${VER_PARTS[1]}"
+                    docker tag bids-client flywheel/bids-client:${MINOR_TAG}
+                    docker push flywheel/bids-client:${MINOR_TAG}
+                  fi
+                )
+              fi
+              if [ "$CIRCLE_BRANCH" == "master" ]; then
+                docker tag bids-client flywheel/bids-client:latest
+                docker push flywheel/bids-client:latest
+              fi
+            fi
+
+  deploy-wheel:
+    docker:
+      - image: python:2.7
+    steps:
+      - checkout
+      - run:
+          name: Verify version
+          command: python setup.py verify
+
+      - run:
+          name: Build Wheel
+          command: python setup.py bdist_wheel
+
+      - run:
+          name: Deploy Wheel
+          command: |
+            pip install -qq twine
+            twine upload -u $PYPI_USER -p $PYPI_PASS dist/*
+
