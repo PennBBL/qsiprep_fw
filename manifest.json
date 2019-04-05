@@ -1,5 +1,5 @@
 {
-  "name": "qsiprep_fw",
+  "name": "qsiprep-fw",
   "label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
   "description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
   "author": "Matt Cieslak, FMRIPREP authors",
@@ -7,9 +7,12 @@
   "maintainer": "Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>",
   "source": "https://github.com/pennbbl/qsiprep_fw",
   "url": "https://qsiprep.readthedocs.io/",
-  "version": "0.1.0_0.2.0",
+  "version": "0.1.1_0.2.2",
   "custom": {
-    "docker-image": "pennbbl/qsiprep_fw:0.1.0_0.2.0",
+    "gear-builder":{
+      "image": "pennbbl/qsiprep_fw:0.1.1_0.2.2",
+      "category": "analysis"
+    },
     "flywheel":{"suite": "PennBBL"}
   },
   "license": "Other",
@@ -30,7 +33,6 @@
     "recon_spec": {
       "description": "JSON file describing the steps that will occur after preprocessing.",
       "base": "file",
-      "type": "source_code",
       "optional": true
     },
     "freesurfer_license": {
@@ -81,7 +83,7 @@
     "write_local_bvecs": {
       "description": "write a series of voxelwise bvecs [default=false].",
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "b0_to_t1w_transform": {
       "description": "Degrees of freedom when registering b0 to T1w images. 6 degrees (rotation and translation) are used by default.",
@@ -108,7 +110,6 @@
     "output_resolution": {
       "description": "the isotropic voxel size in mm the data will be resampled to after preprocessing. If set to a lower value than the original voxel size, your data will be upsampled.",
       "type": "number",
-      "type": "boolean",
       "optional": false
     },
 

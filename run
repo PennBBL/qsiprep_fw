@@ -105,7 +105,7 @@ fi
 if [[ $config_write_local_bvecs == 'false' ]]; then
   write_local_bvecs_FLAG=''
 else
-  write_local_bvecs_FLAG='--write_local_bvecs'
+  write_local_bvecs_FLAG='--write-local-bvecs'
 fi
 
 b0_to_t1w_transform_FLAG='--b0-to-t1w-transform '${config_b0_to_t1w_transform}

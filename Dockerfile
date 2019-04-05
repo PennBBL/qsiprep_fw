@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -y install \
 
 ############################
 # Install the Flywheel SDK
-RUN pip install 'flywheel-sdk==4.4.4'
+RUN pip install flywheel-sdk~=5.0.4
 
 ############################
 # Install the Flywheel BIDS client
