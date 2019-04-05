@@ -7,7 +7,7 @@
   "maintainer": "Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>",
   "source": "https://github.com/pennbbl/qsiprep_fw",
   "url": "https://qsiprep.readthedocs.io/",
-  "version": "0.1",
+  "version": "0.1.0_0.2.0",
   "custom": {
     "docker-image": "pennbbl/qsiprep_fw:0.1.0_0.2.0",
     "flywheel":{"suite": "PennBBL"}
