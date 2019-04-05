@@ -40,6 +40,7 @@
       "base": "file",
       "optional": false
     }
+
   },
 
 
@@ -55,6 +56,11 @@
     },
     "longitudinal": {
       "description": "Treat dataset as longitudinal - may increase runtime [default=false]",
+      "type": "boolean",
+      "default": false
+    },
+    "do_reconall": {
+      "description": "Run FreeSurfer on anatomical scans - will increase runtime [default=false]",
       "type": "boolean",
       "default": false
     },
