@@ -1,13 +1,6 @@
 #! /bin/bash
-#
-# Flywheel 2017
-#
-#
 
-
-################################################################################
 # DEFINE VARIABLES
-
 FLYWHEEL_BASE=/flywheel/v0
 MANIFEST_FILE=$FLYWHEEL_BASE/manifest.json
 CONFIG_FILE=$FLYWHEEL_BASE/config.json
@@ -24,7 +17,6 @@ CONTAINER='[flywheel/qsiprep]'
 
 ################################################################################
 # DISPLAY QSIPREP DOCKERFILE FOR BUILD INFO
-
 echo -e "$CONTAINER BEGIN QSIPREP DOCKERFILE\n"
 cat ${FLYWHEEL_BASE}/*Dockerfile
 echo -e "$CONTAINER END QSIPREP DOCKERFILE \n"
@@ -32,13 +24,11 @@ echo -e "$CONTAINER END QSIPREP DOCKERFILE \n"
 
 ################################################################################
 # CONFIGURE ENV
-
 source ${FLYWHEEL_BASE}/docker-env.sh
 
 
 ##############################################################################
 # Parse configuration
-
 function parse_config {
 
   CONFIG_FILE=$FLYWHEEL_BASE/config.json
@@ -61,20 +51,30 @@ config_intermediate_folders="$(parse_config 'intermediate_folders')"
 # Workflow Options
 config_ignore="$(parse_config 'ignore')"
 config_longitudinal="$(parse_config 'longitudinal')"
-config_t2s_coreg="$(parse_config 't2s_coreg')"
-config_bold2t1w_dof="$(parse_config 'bold2t1w_dof')"
+config_dwi_denoise_window="$(parse_config 'dwi_denoise_window')"
+config_denoise_before_combining="$(parse_config 'denoise_before_combining')"
+config_combine_all_dwis="$(parse_config 'combine_all_dwis')"
+config_write_local_bvecs="$(parse_config 'write_local_bvecs')"
+config_b0_to_t1w_transform="$(parse_config 'b0_to_t1w_transform')"
 config_output_space="$(parse_config 'output_space')"
-config_force_bbr="$(parse_config 'force_bbr')"
-config_force_no_bbr="$(parse_config 'force_no_bbr')"
 config_template="$(parse_config 'template')"
-config_template_resampling_grid="$(parse_config 'template_resampling_grid')"
-config_medial_surface_nan="$(parse_config 'medial_surface_nan')"
+config_output_resolution="$(parse_config 'output_resolution')"
 
+config_b0_motion_corr_to="$(parse_config 'b0_motion_corr_to')"
+config_do_reconall="$(parse_config 'do_reconall')"
+config_hmc_transform="$(parse_config 'hmc_transform')"
+config_hmc_model="$(parse_config 'hmc_model')"
+config_impute_slice_threshold="$(parse_config 'impute_slice_threshold')"
+config_force_spatial_normalization="$(parse_config 'force_spatial_normalization')"
+config_skull_strip_template="$(parse_config 'skull_strip_template')"
+config_skull_strip_fixed_seed="$(parse_config 'skull_strip_fixed_seed')"
+config_fmap_bspline="$(parse_config 'fmap_bspline')"
+config_fmap_no_demean="$(parse_config 'fmap_no_demean')"
+config_prefer_dedicated_fmaps="$(parse_config 'prefer_dedicated_fmaps')"
+config_use_syn_sdc="$(parse_config 'use_syn_sdc')"
+config_force_syn="$(parse_config 'force_syn')"
+config_sloppy="$(parse_config 'sloppy')"
 
-template_FLAG='--template '${config_template}
-template_resampling_grid_FLAG='--template-resampling-grid '${config_template_resampling_grid}
-bold2t1w_dof_FLAG='--bold2t1w-dof '${config_bold2t1w_dof}
-output_space_FLAG='--output-space '${config_output_space}
 
 if [[ $config_ignore == '' ]]; then
   ignore_FLAG=''
@@ -88,53 +88,41 @@ else
   longitudinal_FLAG='--longitudinal'
 fi
 
-if [[ $config_t2s_coreg == 'false' ]]; then
-  t2s_coreg_FLAG=''
+dwi_denoise_window_FLAG='--dwi-denoise-window '${config_dwi_denoise_window}
+
+if [[ $config_denoise_before_combining == 'false' ]]; then
+  denoise_before_combining_FLAG=''
 else
-  t2s_coreg_FLAG='--t2s-coreg'
+  denoise_before_combining_FLAG='--denoise_before_combining'
 fi
 
-if [[ $config_force_bbr == 'false' ]]; then
-  force_bbr_FLAG=''
+if [[ $config_combine_all_dwis == 'false' ]]; then
+  combine_all_dwis_FLAG=''
 else
-  force_bbr_FLAG='--force-bbr'
+  combine_all_dwis_FLAG='--combine_all_dwis'
 fi
 
-if [[ $config_force_no_bbr == 'false' ]]; then
-  force_no_bbr_FLAG=''
+if [[ $config_write_local_bvecs == 'false' ]]; then
+  write_local_bvecs_FLAG=''
 else
-  force_no_bbr_FLAG='--force-no-bbr'
+  write_local_bvecs_FLAG='--write_local_bvecs'
 fi
 
-if [[ $config_medial_surface_nan == 'false' ]]; then
-  medial_surface_nan_FLAG=''
+b0_to_t1w_transform_FLAG='--b0-to-t1w-transform '${config_b0_to_t1w_transform}
+output_space_FLAG='--output-space '${config_output_space}
+template_FLAG='--template '${config_template}
+output_resolution_FLAG='--output-resolution '${config_output_resolution}
+b0_motion_corr_to_FLAG='--b0-motion-corr-to '${config_b0_motion_corr_to}
+hmc_transform_FLAG='--hmc-transform '${config_hmc_transform}
+hmc_model_FLAG='--hmc-model '${config_hmc_model}
+impute_slice_threshold_FLAG='--impute-slice-threshold '${config_impute_slice_threshold}
+
+
+if [[ $config_force_spatial_normalization == 'false' ]]; then
+  force_spatial_normalization_FLAG=''
 else
-  medial_surface_nan_FLAG='--medial-surface-nan'
+  force_spatial_normalization_FLAG='--force-spatial-normalization'
 fi
-
-
-##################
-# Specific options for ICA Aroma
-config_use_aroma="$(parse_config 'use_aroma')"
-config_aroma_melodic_dimensionality="$(parse_config 'aroma_melodic_dimensionality')"
-
-if [[ $config_use_aroma == 'false' ]]; then
-  use_aroma_FLAG=''
-else
-  use_aroma_FLAG='--use-aroma'
-fi
-
-if [[ $config_aroma_melodic_dimensionality == 'None' ]]; then
-  aroma_melodic_dimensionality_FLAG=''
-else
-  aroma_melodic_dimensionality_FLAG='--aroma-melodic-dimensionality '"${config_aroma_melodic_dimensionality}"
-fi
-
-
-##################
-# Specific options for ANTs registrations
-config_skull_strip_template="$(parse_config 'skull_strip_template')"
-config_skull_strip_fixed_seed="$(parse_config 'skull_strip_fixed_seed')"
 
 skull_strip_template_FLAG='--skull-strip-template '${config_skull_strip_template}
 
@@ -144,10 +132,11 @@ else
   skull_strip_fixed_seed_FLAG='--skull-strip-fixed-seed'
 fi
 
-##################
-# Specific options for fieldmaps
-config_fmap_bspline="$(parse_config 'fmap_bspline')"
-config_fmap_no_demean="$(parse_config 'fmap_no_demean')"
+if [[ $config_do_reconall == 'true' ]]; then
+  freesurfer_FLAG=''
+else
+  freesurfer_FLAG='--do-reconall'
+fi
 
 if [[ $config_fmap_bspline == 'false' ]]; then
   fmap_bspline_FLAG=''
@@ -161,11 +150,14 @@ else
   fmap_no_demean_FLAG='--fmap-no-demean'
 fi
 
+if [[ $config_prefer_dedicated_fmaps == 'false' ]]; then
+  prefer_dedicated_fmaps_FLAG=''
+else
+  prefer_dedicated_fmaps_FLAG='--prefer_dedicated_fmaps'
+fi
+
 ##################
 # Specific options for SyN distortion correction
-config_use_syn_sdc="$(parse_config 'use_syn_sdc')"
-config_force_syn="$(parse_config 'force_syn')"
-
 if [[ $config_use_syn_sdc == 'false' ]]; then
   use_syn_sdc_FLAG=''
 else
@@ -178,30 +170,8 @@ else
   force_syn_FLAG='--force-syn'
 fi
 
-##################
-# Surface preprocessing options
-config_no_submm_recon="$(parse_config 'no_submm_recon')"
-config_cifti_output="$(parse_config 'cifti_output')"
-config_freesurfer="$(parse_config 'fs_no_reconall')"
-
-if [[ $config_no_submm_recon == 'false' ]]; then
-  no_submm_recon_FLAG=''
-else
-  no_submm_recon_FLAG='--no-submm-recon'
-fi
-
-if [[ $config_cifti_output == 'false' ]]; then
-  cifti_output_FLAG=''
-else
-  cifti_output_FLAG='--cifti-output'
-fi
-
 # Boolean parsing of freesurfer config option
-if [[ $config_freesurfer == 'false' ]]; then
-  freesurfer_FLAG=''
-else
-  freesurfer_FLAG='--fs-no-reconall'
-fi
+
 
 ################################################################################
 # Freesurfer License
@@ -260,31 +230,33 @@ ls -R ${BIDS_DIR}
 # RUN QSIPREP
 
 time /usr/local/miniconda/bin/qsiprep \
-      ${BIDS_DIR} \
-      ${QSIPREP_OUTPUT_DIR} \
-      participant \
+      --bids-dir ${BIDS_DIR} \
+      --output-dir ${QSIPREP_OUTPUT_DIR} \
+      --analysis-level participant \
       -w ${WORKING_DIR} \
-      ${freesurfer_FLAG} \
       ${ignore_FLAG} \
       ${longitudinal_FLAG} \
-      ${t2s_coreg_FLAG} \
-      ${bold2t1w_dof_FLAG} \
+      ${dwi_denoise_window_FLAG} \
+      ${denoise_before_combining_FLAG} \
+      ${combine_all_dwis_FLAG} \
+      ${write_local_bvecs_FLAG} \
+      ${b0_to_t1w_transform_FLAG} \
       ${output_space_FLAG} \
-      ${force_bbr_FLAG} \
-      ${force_no_bbr_FLAG} \
       ${template_FLAG} \
-      ${template_resampling_grid_FLAG} \
-      ${medial_surface_nan_FLAG} \
-      ${use_aroma_FLAG} \
-      ${aroma_melodic_dimensionality_FLAG} \
+      ${output_resolution_FLAG} \
+      ${b0_motion_corr_to_FLAG} \
+      ${hmc_transform_FLAG} \
+      ${hmc_model_FLAG} \
+      ${impute_slice_threshold_FLAG} \
+      ${force_spatial_normalization_FLAG} \
       ${skull_strip_template_FLAG} \
       ${skull_strip_fixed_seed_FLAG} \
+      ${freesurfer_FLAG} \
       ${fmap_bspline_FLAG} \
       ${fmap_no_demean_FLAG} \
+      ${prefer_dedicated_fmaps_FLAG} \
       ${use_syn_sdc_FLAG} \
-      ${force_syn_FLAG} \
-      ${no_submm_recon_FLAG} \
-      ${cifti_output_FLAG}
+      ${force_syn_FLAG}
 
 
 QSIPREP_EXITSTATUS=$?

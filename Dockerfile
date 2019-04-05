@@ -39,7 +39,7 @@ COPY fs_license.py /flywheel/v0/fs_license.py
 ENTRYPOINT ["/flywheel/v0/run"]
 
 # Add the fmriprep dockerfile to the container
-ADD https://raw.githubusercontent.com/pennbbl/qsiprep/${QSIIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
+ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
 
 
 ############################
