@@ -60,7 +60,7 @@
       "description": "window size in voxels for ``dwidenoise``. Must be odd. If 0, ``dwidenoise`` will not be run.",
       "type": "integer",
       "enum": [
-        0
+        0,
         3,
         5,
         7,
