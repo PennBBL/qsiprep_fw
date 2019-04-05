@@ -132,7 +132,7 @@ else
   skull_strip_fixed_seed_FLAG='--skull-strip-fixed-seed'
 fi
 
-if [[ $config_do_reconall == 'true' ]]; then
+if [[ $config_do_reconall == 'false' ]]; then
   freesurfer_FLAG=''
 else
   freesurfer_FLAG='--do-reconall'
