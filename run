@@ -170,6 +170,11 @@ else
   force_syn_FLAG='--force-syn'
 fi
 
+if [[ $config_sloppy == 'false' ]]; then
+  sloppy_FLAG=''
+else
+  sloppy_FLAG='--sloppy'
+fi
 # Boolean parsing of freesurfer config option
 
 
@@ -257,7 +262,8 @@ time /usr/local/miniconda/bin/qsiprep \
       ${fmap_no_demean_FLAG} \
       ${prefer_dedicated_fmaps_FLAG} \
       ${use_syn_sdc_FLAG} \
-      ${force_syn_FLAG}
+      ${force_syn_FLAG} \
+      ${sloppy_FLAG}
 
 
 QSIPREP_EXITSTATUS=$?
