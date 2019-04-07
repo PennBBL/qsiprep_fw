@@ -2,11 +2,11 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.2.2
+FROM pennbbl/qsiprep:0.2.3
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
-ENV QSIPREP_VERSION 0.2.2
+ENV QSIPREP_VERSION 0.2.3
 
 ############################
 # Install basic dependencies
@@ -39,7 +39,7 @@ COPY fs_license.py /flywheel/v0/fs_license.py
 ENTRYPOINT ["/flywheel/v0/run"]
 
 # Add the fmriprep dockerfile to the container
-ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
+ADD https://raw.githubusercontent.com/PennBBL/qsiprep/0.2.2/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
 
 
 ############################

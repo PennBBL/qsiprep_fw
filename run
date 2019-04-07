@@ -234,6 +234,7 @@ time /usr/local/miniconda/bin/qsiprep \
       --output-dir ${QSIPREP_OUTPUT_DIR} \
       --analysis-level participant \
       -w ${WORKING_DIR} \
+      -v -v \
       ${ignore_FLAG} \
       ${longitudinal_FLAG} \
       ${dwi_denoise_window_FLAG} \

@@ -1,234 +1,219 @@
 {
-  "name": "qsiprep-fw",
-  "label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
-  "description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-  "author": "Matt Cieslak, FMRIPREP authors",
-  "cite": "github.com/pennbbl/qsiprep",
-  "maintainer": "Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>",
-  "source": "https://github.com/pennbbl/qsiprep_fw",
-  "url": "https://qsiprep.readthedocs.io/",
-  "version": "0.1.1_0.2.2",
-  "custom": {
-    "gear-builder":{
-      "image": "pennbbl/qsiprep_fw:0.1.1_0.2.2",
-      "category": "analysis"
-    },
-    "flywheel":{"suite": "PennBBL"}
-  },
-  "license": "Other",
-  "inputs": {
-    "api_key": {
-      "base": "api-key"
-    },
-    "t1w_anatomy": {
-      "description": "T1 weighted anatomical NIfTI file. When provided this file will be used in place of any T1w images found in the current session.",
-      "base": "file",
-      "optional": true,
-      "type": {
-        "enum": [
-          "nifti"
-        ]
-      }
-    },
-    "recon_spec": {
-      "description": "JSON file describing the steps that will occur after preprocessing.",
-      "base": "file",
-      "optional": true
-    },
-    "freesurfer_license": {
-      "description": "FreeSurfer license file, provided during registration with FreeSurfer. This file will by copied to the $FSHOME directory and used during execution of the Gear.",
-      "base": "file",
-      "optional": false
-    }
-
-  },
-
-
-  "config": {
-    "ignore": {
-      "description": "Ignore selected aspects of the input dataset to disable corresponding parts of the workflow. Possible choices: fieldmaps [default='']",
-      "type": "string",
-      "enum": [
-        "",
-        "fieldmaps"
-      ],
-      "default": ""
-    },
-    "longitudinal": {
-      "description": "Treat dataset as longitudinal - may increase runtime [default=false]",
-      "type": "boolean",
-      "default": false
-    },
-    "do_reconall": {
-      "description": "Run FreeSurfer on anatomical scans - will increase runtime [default=false]",
-      "type": "boolean",
-      "default": false
-    },
-    "dwi_denoise_window": {
-      "description": "window size in voxels for ``dwidenoise``. Must be odd. If 0, ``dwidenoise`` will not be run.",
-      "type": "integer",
-      "enum": [
-        0,
-        3,
-        5,
-        7,
-        9
-      ],
-      "default": 0
-    },
-    "denoise_before_combining": {
-      "description": "run ``dwidenoise`` before combining dwis. Requires ``--combine-all-dwis``",
-      "type": "boolean",
-      "default": true
-    },
-    "combine_all_dwis": {
-      "description": "combine dwis from across multiple runs for motion correction and reconstruction [default=true].",
-      "type": "boolean",
-      "default": true
-    },
-    "write_local_bvecs": {
-      "description": "write a series of voxelwise bvecs [default=false].",
-      "type": "boolean",
-      "default": false
-    },
-    "b0_to_t1w_transform": {
-      "description": "Degrees of freedom when registering b0 to T1w images. 6 degrees (rotation and translation) are used by default.",
-      "type": "string",
-      "enum": [
-        "Rigid",
-        "Affine"
-      ],
-      "default": "Affine"
-    },
-    "output_space": {
-      "description": "Volume and surface spaces to resample functional series into. Possible choices (space separated list): T1w, template. T1w: subject anatomical volume. template: normalization target specified by –template.  [default='T1w']",
-      "type": "string",
-      "default": "T1w"
-    },
-    "template": {
-      "description": "Volume template space (default: MNI152NLin2009cAsym). This is currently the only choice.",
-      "type": "string",
-      "enum": [
-        "MNI152NLin2009cAsym"
-      ],
-      "default": "MNI152NLin2009cAsym"
-    },
-    "output_resolution": {
-      "description": "the isotropic voxel size in mm the data will be resampled to after preprocessing. If set to a lower value than the original voxel size, your data will be upsampled.",
-      "type": "number",
-      "optional": false
-    },
-
-
-    "b0_motion_corr_to": {
-      "description": " align to the 'first' b0 volume or do an 'iterative' registration of all b0 image to their midpoint image [default=iterative].",
-      "type": "string",
-      "enum": [
-        "iterative",
-        "first"
-      ],
-      "default": "iterative"
-    },
-    "hmc_transform": {
-      "description": "transformation to be optimized during head motion correction.",
-      "type": "string",
-      "enum": [
-        "Rigid",
-        "Affine"
-      ],
-      "default": "Rigid"
-    },
-    "hmc_model": {
-      "description": "model used to generate target images for hmc. If 'none' the non-b0 images will be warped using the same transform as their nearest b0 image. If '3dSHORE', SHORELine will be used. If 'eddy_ingress', the dwis are assumed to have been run through fsls eddy.",
-      "type": "string",
-      "enum": [
-        "none",
-        "3dSHORE",
-        "eddy_ingress",
-        "eddy"
-      ],
-      "default": "3dSHORE"
-    },
-    "impute_slice_threshold": {
-      "description": "impute data in slices that are this many SDs from expected. If 0, no slices will be imputed (not implemented)",
-      "type": "number",
-      "enum": [
-        0
-      ],
-      "default": 0
-    },
-
-
-    "force_spatial_normalization": {
-      "description": "ensures that spatial normalization is run, even if template is not specified in --output-space. Useful if you plan to warp atlases into subject space.",
-      "type": "boolean",
-      "default": true
-    },
-    "skull_strip_template": {
-      "description": "Possible choices: OASIS, NKI. select ANTs skull-stripping template (default: OASIS))",
-      "type": "string",
-      "enum": [
-        "NKI",
-        "OASIS"
-      ],
-      "default": "OASIS"
-    },
-    "skull_strip_fixed_seed": {
-      "description": "do not use a random seed for skull-stripping - will ensure run-to-run replicability when used with –omp-nthreads 1 [ default = false ]",
-      "type": "boolean",
-      "default": false
-    },
-    "fmap_bspline": {
-      "description": "fit a B-Spline field using least-squares (experimental)",
-      "type": "boolean",
-      "default": false
-    },
-    "fmap_no_demean": {
-      "description": "do not remove median (within mask) from fieldmap [ default = false ]",
-      "type": "boolean",
-      "default": false
-    },
-    "use_syn_sdc": {
-      "description": "EXPERIMENTAL: Use fieldmap-free distortion correction. [ default = false ]",
-      "type": "boolean",
-      "default": false
-    },
-    "force_syn": {
-      "description": "EXPERIMENTAL/TEMPORARY: Use SyN correction in addition to fieldmap correction, if available. [ default = false ]",
-      "type": "boolean",
-      "default": false
-    },
-
-    "sloppy": {
-      "description": "Use low-quality tools for speed - TESTING ONLY",
-      "type": "boolean",
-      "default": false
-    },
-
-    "save_outputs": {
-      "description": "Zip and save output directory contents on an algorithm failure. [default=false]",
-      "type": "boolean",
-      "default": false
-    },
-    "save_intermediate_work": {
-      "description": "Zip and save working directory with intermediate files. [default=false]",
-      "type": "boolean",
-      "default": false
-    },
-    "intermediate_files": {
-      "description": "Space separated list of FILES to retain from the intermediate work directory.",
-      "default": "",
-      "type": "string"
-    },
-    "intermediate_folders": {
-      "description": "Space separated list of FOLDERS to retain from the intermediate work directory.",
-      "default": "",
-      "type": "string"
-    }
-
-
-
-
-
-  }
+	"name": "qsiprep-fw",
+	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
+	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
+	"version": "0",
+	"inputs": {
+		"api_key": {
+			"base": "api-key"
+		},
+		"freesurfer_license": {
+			"base": "file",
+			"description": "FreeSurfer license file, provided during registration with FreeSurfer. This file will by copied to the $FSHOME directory and used during execution of the Gear.",
+			"optional": false
+		},
+		"recon_spec": {
+			"base": "file",
+			"description": "JSON file describing the steps that will occur after preprocessing.",
+			"optional": true
+		},
+		"t1w_anatomy": {
+			"base": "file",
+			"description": "T1 weighted anatomical NIfTI file. When provided this file will be used in place of any T1w images found in the current session.",
+			"optional": true,
+			"type": {
+				"enum": [
+					"nifti"
+				]
+			}
+		}
+	},
+	"config": {
+		"b0_motion_corr_to": {
+			"default": "iterative",
+			"description": " align to the 'first' b0 volume or do an 'iterative' registration of all b0 image to their midpoint image [default=iterative].",
+			"enum": [
+				"iterative",
+				"first"
+			],
+			"type": "string"
+		},
+		"b0_to_t1w_transform": {
+			"default": "Affine",
+			"description": "Degrees of freedom when registering b0 to T1w images. 6 degrees (rotation and translation) are used by default.",
+			"enum": [
+				"Rigid",
+				"Affine"
+			],
+			"type": "string"
+		},
+		"combine_all_dwis": {
+			"default": true,
+			"description": "combine dwis from across multiple runs for motion correction and reconstruction [default=true].",
+			"type": "boolean"
+		},
+		"denoise_before_combining": {
+			"default": true,
+			"description": "run ``dwidenoise`` before combining dwis. Requires ``--combine-all-dwis``",
+			"type": "boolean"
+		},
+		"do_reconall": {
+			"default": false,
+			"description": "Run FreeSurfer on anatomical scans - will increase runtime [default=false]",
+			"type": "boolean"
+		},
+		"dwi_denoise_window": {
+			"default": 0,
+			"description": "window size in voxels for ``dwidenoise``. Must be odd. If 0, ``dwidenoise`` will not be run.",
+			"enum": [
+				0,
+				3,
+				5,
+				7,
+				9
+			],
+			"type": "integer"
+		},
+		"fmap_bspline": {
+			"default": false,
+			"description": "fit a B-Spline field using least-squares (experimental)",
+			"type": "boolean"
+		},
+		"fmap_no_demean": {
+			"default": false,
+			"description": "do not remove median (within mask) from fieldmap [ default = false ]",
+			"type": "boolean"
+		},
+		"force_spatial_normalization": {
+			"default": true,
+			"description": "ensures that spatial normalization is run, even if template is not specified in --output-space. Useful if you plan to warp atlases into subject space.",
+			"type": "boolean"
+		},
+		"force_syn": {
+			"default": false,
+			"description": "EXPERIMENTAL/TEMPORARY: Use SyN correction in addition to fieldmap correction, if available. [ default = false ]",
+			"type": "boolean"
+		},
+		"hmc_model": {
+			"default": "3dSHORE",
+			"description": "model used to generate target images for hmc. If 'none' the non-b0 images will be warped using the same transform as their nearest b0 image. If '3dSHORE', SHORELine will be used. If 'eddy_ingress', the dwis are assumed to have been run through fsls eddy.",
+			"enum": [
+				"none",
+				"3dSHORE",
+				"eddy_ingress",
+				"eddy"
+			],
+			"type": "string"
+		},
+		"hmc_transform": {
+			"default": "Rigid",
+			"description": "transformation to be optimized during head motion correction.",
+			"enum": [
+				"Rigid",
+				"Affine"
+			],
+			"type": "string"
+		},
+		"ignore": {
+			"default": "",
+			"description": "Ignore selected aspects of the input dataset to disable corresponding parts of the workflow. Possible choices: fieldmaps [default='']",
+			"enum": [
+				"",
+				"fieldmaps"
+			],
+			"type": "string"
+		},
+		"impute_slice_threshold": {
+			"default": 0,
+			"description": "impute data in slices that are this many SDs from expected. If 0, no slices will be imputed (not implemented)",
+			"enum": [
+				0
+			],
+			"type": "number"
+		},
+		"intermediate_files": {
+			"default": "",
+			"description": "Space separated list of FILES to retain from the intermediate work directory.",
+			"type": "string"
+		},
+		"intermediate_folders": {
+			"default": "",
+			"description": "Space separated list of FOLDERS to retain from the intermediate work directory.",
+			"type": "string"
+		},
+		"longitudinal": {
+			"default": false,
+			"description": "Treat dataset as longitudinal - may increase runtime [default=false]",
+			"type": "boolean"
+		},
+		"output_resolution": {
+			"description": "the isotropic voxel size in mm the data will be resampled to after preprocessing. If set to a lower value than the original voxel size, your data will be upsampled.",
+			"optional": false,
+			"type": "number"
+		},
+		"output_space": {
+			"default": "T1w",
+			"description": "Volume and surface spaces to resample functional series into. Possible choices (space separated list): T1w, template. T1w: subject anatomical volume. template: normalization target specified by –template.  [default='T1w']",
+			"type": "string"
+		},
+		"save_intermediate_work": {
+			"default": false,
+			"description": "Zip and save working directory with intermediate files. [default=false]",
+			"type": "boolean"
+		},
+		"save_outputs": {
+			"default": false,
+			"description": "Zip and save output directory contents on an algorithm failure. [default=false]",
+			"type": "boolean"
+		},
+		"skull_strip_fixed_seed": {
+			"default": false,
+			"description": "do not use a random seed for skull-stripping - will ensure run-to-run replicability when used with –omp-nthreads 1 [ default = false ]",
+			"type": "boolean"
+		},
+		"skull_strip_template": {
+			"default": "OASIS",
+			"description": "Possible choices: OASIS, NKI. select ANTs skull-stripping template (default: OASIS))",
+			"enum": [
+				"NKI",
+				"OASIS"
+			],
+			"type": "string"
+		},
+		"sloppy": {
+			"default": false,
+			"description": "Use low-quality tools for speed - TESTING ONLY",
+			"type": "boolean"
+		},
+		"template": {
+			"default": "MNI152NLin2009cAsym",
+			"description": "Volume template space (default: MNI152NLin2009cAsym). This is currently the only choice.",
+			"enum": [
+				"MNI152NLin2009cAsym"
+			],
+			"type": "string"
+		},
+		"use_syn_sdc": {
+			"default": false,
+			"description": "EXPERIMENTAL: Use fieldmap-free distortion correction. [ default = false ]",
+			"type": "boolean"
+		},
+		"write_local_bvecs": {
+			"default": false,
+			"description": "write a series of voxelwise bvecs [default=false].",
+			"type": "boolean"
+		}
+	},
+	"author": "Matthew Cieslak",
+	"maintainer": "Matthew Cieslak",
+	"cite": "github.com/pennbbl/qsiprep",
+	"license": "Other",
+	"source": "https://github.com/pennbbl/qsiprep_fw",
+	"url": "https://qsiprep.readthedocs.io/",
+	"custom": {
+		"gear-builder": {
+			"category": "analysis",
+			"image": "pennbbl/qsiprep-fw:0.1.2_0.2.3"
+		}
+	}
 }
