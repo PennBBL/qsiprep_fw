@@ -13,6 +13,7 @@ LICENSE_FILE=/opt/freesurfer/license.txt
 FREESURFER_LICENSE_DIR=$INPUT_DIR/freesurfer_license
 BIDS_DIR=$INPUT_DIR/bids_dataset
 CONTAINER='[flywheel/qsiprep]'
+RECON_SPEC_FILE=$(ls $INPUT_DIR/recon_spec/*.json | head -n 1 )
 
 
 ################################################################################
@@ -175,8 +176,13 @@ if [[ $config_sloppy == 'false' ]]; then
 else
   sloppy_FLAG='--sloppy'
 fi
-# Boolean parsing of freesurfer config option
 
+# Boolean parsing of freesurfer config option
+if [[ -n "$RECON_SPEC_FILE" ]]; then
+  recon_spec_FLAG='--recon_spec '$RECON_SPEC_FILE
+else
+  recon_spec_FLAG=''
+fi
 
 ################################################################################
 # Freesurfer License
@@ -263,7 +269,8 @@ time /usr/local/miniconda/bin/qsiprep \
       ${prefer_dedicated_fmaps_FLAG} \
       ${use_syn_sdc_FLAG} \
       ${force_syn_FLAG} \
-      ${sloppy_FLAG}
+      ${sloppy_FLAG} \
+      ${recon_spec_FLAG}
 
 
 QSIPREP_EXITSTATUS=$?
