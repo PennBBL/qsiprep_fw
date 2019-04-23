@@ -65,6 +65,7 @@ config_b0_motion_corr_to="$(parse_config 'b0_motion_corr_to')"
 config_do_reconall="$(parse_config 'do_reconall')"
 config_hmc_transform="$(parse_config 'hmc_transform')"
 config_hmc_model="$(parse_config 'hmc_model')"
+config_shoreline_iters="$(parse_config 'shoreline_iters')"
 config_impute_slice_threshold="$(parse_config 'impute_slice_threshold')"
 config_force_spatial_normalization="$(parse_config 'force_spatial_normalization')"
 config_skull_strip_template="$(parse_config 'skull_strip_template')"
@@ -116,6 +117,7 @@ output_resolution_FLAG='--output-resolution '${config_output_resolution}
 b0_motion_corr_to_FLAG='--b0-motion-corr-to '${config_b0_motion_corr_to}
 hmc_transform_FLAG='--hmc-transform '${config_hmc_transform}
 hmc_model_FLAG='--hmc-model '${config_hmc_model}
+shoreline_iters_FLAG='--shoreline-iters '${config_shoreline_iters}
 impute_slice_threshold_FLAG='--impute-slice-threshold '${config_impute_slice_threshold}
 
 
@@ -259,6 +261,7 @@ time /usr/local/miniconda/bin/qsiprep \
       ${b0_motion_corr_to_FLAG} \
       ${hmc_transform_FLAG} \
       ${hmc_model_FLAG} \
+      ${shoreline_iters_FLAG} \
       ${impute_slice_threshold_FLAG} \
       ${force_spatial_normalization_FLAG} \
       ${skull_strip_template_FLAG} \

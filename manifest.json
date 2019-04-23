@@ -2,7 +2,7 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.5_0.2.3",
+	"version": "0.1.6_0.3.1",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -114,6 +114,11 @@
 			],
 			"type": "string"
 		},
+		"shoreline_iters":{
+			"default": 2,
+			"description": "Number of SHORELine iterations",
+			"type":"integer"			
+		},
 		"ignore": {
 			"default": "",
 			"description": "Ignore selected aspects of the input dataset to disable corresponding parts of the workflow. Possible choices: fieldmaps [default='']",
@@ -213,7 +218,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.5_0.2.3"
+			"image": "pennbbl/qsiprep-fw:0.1.6_0.3.1"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
