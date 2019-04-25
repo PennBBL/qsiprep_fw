@@ -2,7 +2,7 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.6_0.3.1",
+	"version": "0.1.8_0.3.2",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -39,7 +39,7 @@
 			"type": "string"
 		},
 		"b0_to_t1w_transform": {
-			"default": "Affine",
+			"default": "Rigid",
 			"description": "Degrees of freedom when registering b0 to T1w images. 6 degrees (rotation and translation) are used by default.",
 			"enum": [
 				"Rigid",
@@ -106,7 +106,7 @@
 			"type": "string"
 		},
 		"hmc_transform": {
-			"default": "Rigid",
+			"default": "Affine",
 			"description": "transformation to be optimized during head motion correction.",
 			"enum": [
 				"Rigid",
@@ -117,7 +117,7 @@
 		"shoreline_iters":{
 			"default": 2,
 			"description": "Number of SHORELine iterations",
-			"type":"integer"			
+			"type":"integer"
 		},
 		"ignore": {
 			"default": "",
@@ -167,7 +167,7 @@
 			"type": "boolean"
 		},
 		"save_outputs": {
-			"default": false,
+			"default": true,
 			"description": "Zip and save output directory contents on an algorithm failure. [default=false]",
 			"type": "boolean"
 		},
@@ -218,7 +218,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.6_0.3.1"
+			"image": "pennbbl/qsiprep-fw:0.1.8_0.3.2"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
