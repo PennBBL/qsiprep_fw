@@ -2,7 +2,7 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.3.3
+FROM pennbbl/qsiprep:0.3.1
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
@@ -19,13 +19,9 @@ RUN apt-get update && apt-get -y install \
 
 ############################
 # Install the Flywheel SDK
-RUN pip install flywheel-sdk~=5.0.4
-
-############################
-# Install the Flywheel BIDS client
-COPY bids-client /bids-client
-RUN cd /bids-client \
-    && pip install -e .
+RUN pip install flywheel-sdk~=6.0.6
+RUN pip install fw-heudiconv
+RUN pip install heudiconv
 
 ############################
 # Make directory for flywheel spec (v0)
@@ -44,8 +40,7 @@ ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerf
 
 ############################
 # Copy over python scripts that generate the BIDS hierarchy
-COPY create_archive.py /flywheel/v0/create_archive.py
-COPY create_archive_funcs.py /flywheel/v0/create_archive_funcs.py
+COPY create_archive_fw_heudiconv.py /flywheel/v0/create_archive_fw_heudiconv.py
 RUN chmod +x ${FLYWHEEL}/*
 
 
