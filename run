@@ -11,7 +11,7 @@ QSIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"
 WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 LICENSE_FILE=/opt/freesurfer/license.txt
 FREESURFER_LICENSE_DIR=$INPUT_DIR/freesurfer_license
-BIDS_DIR=$INPUT_DIR/BIDS_output
+BIDS_DIR=$INPUT_DIR/bids_dataset
 CONTAINER='[flywheel/qsiprep]'
 RECON_SPEC_FILE=$(ls $INPUT_DIR/recon_spec/*.json | head -n 1 )
 
@@ -339,6 +339,33 @@ elif [[ $config_save_outputs == 'true' ]] ; then
   time zip -q -r "$GEAR_OUTPUT_DIR"/debug_qsiprep_"$ANALYSIS_ID"  $(basename "$QSIPREP_OUTPUT_DIR")
   time zip -q -r "$GEAR_OUTPUT_DIR"/debug_qsiprep_work_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
   chmod -R 777 $GEAR_OUTPUT_DIR
+
+################################################################################
+# COPY ANALYSIS TO PROJECT LEVEL IF MULTI-SESSION
+#   Use Python SDK to accomplish this task
+
+/usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/move_to_project.py
+if [[ $? != 0 ]]; then
+  echo "$CONTAINER  Problem resolving multi-session structure! Exiting (1)"
+  exit 1
+fi
+
+elif [[ $config_save_outputs == 'true' ]] ; then
+echo "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
+cd "$GEAR_OUTPUT_DIR"
+time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_"$ANALYSIS_ID"  $(basename "$FMRIPREP_OUTPUT_DIR")
+time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_work_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
+chmod -R 777 $GEAR_OUTPUT_DIR
+
+################################################################################
+# COPY ANALYSIS TO PROJECT LEVEL IF MULTI-SESSION
+#   Use Python SDK to accomplish this task
+
+/usr/local/miniconda/bin/python ${FLYWHEEL_BASE}/move_to_project.py
+if [[ $? != 0 ]]; then
+  echo "$CONTAINER  Problem resolving multi-session structure! Exiting (1)"
+  exit 1
+fi
 
 else
   echo "$CONTAINER  Errors encountered during execution. Save outputs config not set. Cleaning up and exiting."
