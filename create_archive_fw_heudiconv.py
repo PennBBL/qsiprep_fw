@@ -29,7 +29,7 @@ project_container = fw.get(analysis_container.parents['project'])
 project_label = project_container.label
 dry_run = False #config['dry_run']
 action = "Export" #config['action']
-use_all_sessions = config['use_all_sessions']
+use_all_sessions = False #config['use_all_sessions']
 
 # is there a separate t1/t2?
 if 't1w_anatomy' in inputs:

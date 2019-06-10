@@ -26,7 +26,7 @@ if outputs:
     project_label = project_container.label
     dry_run = False #config['dry_run']
     action = "Export" #config['action']
-    use_all_sessions = config['use_all_sessions']
+    use_all_sessions = False #config['use_all_sessions']
 
     if use_all_sessions:
 
