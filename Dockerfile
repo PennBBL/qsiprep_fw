@@ -20,7 +20,6 @@ RUN apt-get update && apt-get -y install \
 ############################
 # Install the Flywheel SDK
 RUN pip install flywheel-sdk~=6.0.6
-RUN pip install fw-heudiconv
 RUN pip install heudiconv
 
 ############################
@@ -43,6 +42,7 @@ ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerf
 COPY create_archive_fw_heudiconv.py /flywheel/v0/create_archive_fw_heudiconv.py
 COPY move_to_project.py /flywheel/v0/move_to_project.py
 RUN chmod +x ${FLYWHEEL}/*
+RUN pip install fw-heudiconv -U
 
 
 ############################
