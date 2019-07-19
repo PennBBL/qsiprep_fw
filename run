@@ -14,6 +14,7 @@ FREESURFER_LICENSE_DIR=$INPUT_DIR/freesurfer_license
 BIDS_DIR=$INPUT_DIR/bids_dataset
 CONTAINER='[flywheel/qsiprep]'
 RECON_SPEC_FILE=$(ls $INPUT_DIR/recon_spec/*.json | head -n 1 )
+EDDY_CONFIG_FILE=$(ls $INPUT_DIR/eddy_config/*.json | head -n 1 )
 
 
 ################################################################################
@@ -62,6 +63,7 @@ config_template="$(parse_config 'template')"
 config_output_resolution="$(parse_config 'output_resolution')"
 
 config_b0_motion_corr_to="$(parse_config 'b0_motion_corr_to')"
+config_b0_threshold="$(parse_config 'b0_threshold')"
 config_do_reconall="$(parse_config 'do_reconall')"
 config_hmc_transform="$(parse_config 'hmc_transform')"
 config_hmc_model="$(parse_config 'hmc_model')"
@@ -111,6 +113,7 @@ else
 fi
 
 b0_to_t1w_transform_FLAG='--b0-to-t1w-transform '${config_b0_to_t1w_transform}
+b0_threshold_FLAG='--b0-threshold '${config_b0_threshold}
 output_space_FLAG='--output-space '${config_output_space}
 template_FLAG='--template '${config_template}
 output_resolution_FLAG='--output-resolution '${config_output_resolution}
@@ -179,16 +182,20 @@ else
   sloppy_FLAG='--sloppy'
 fi
 
-# Boolean parsing of freesurfer config option
 if [[ -n "$RECON_SPEC_FILE" ]]; then
   recon_spec_FLAG='--recon_spec '$RECON_SPEC_FILE
 else
   recon_spec_FLAG=''
 fi
 
-################################################################################
-# Freesurfer License
+if [[ -n "$EDDY_CONFIG_FILE" ]]; then
+  eddy_config_FLAG='--eddy_config '$EDDY_CONFIG_FILE
+else
+  eddy_config_FLAG=''
+fi
 
+########################
+# Freesurfer License
 ########################
 
 echo "$CONTAINER  Attempting to generate license file..."
@@ -249,12 +256,14 @@ time /usr/local/miniconda/bin/qsiprep \
       -w ${WORKING_DIR} \
       -v -v \
       ${ignore_FLAG} \
+      ${eddy_config_FLAG} \
       ${longitudinal_FLAG} \
       ${dwi_denoise_window_FLAG} \
       ${denoise_before_combining_FLAG} \
       ${combine_all_dwis_FLAG} \
       ${write_local_bvecs_FLAG} \
       ${b0_to_t1w_transform_FLAG} \
+      ${b0_threshold_FLAG} \
       ${output_space_FLAG} \
       ${template_FLAG} \
       ${output_resolution_FLAG} \
@@ -353,8 +362,8 @@ elif [[ $config_save_outputs == 'true' ]] ; then
 elif [[ $config_save_outputs == 'true' ]] ; then
   echo "$CONTAINER  Error occurred. Config 'save_outputs' set to true. Zipping up outputs."
   cd "$GEAR_OUTPUT_DIR"
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_"$ANALYSIS_ID"  $(basename "$FMRIPREP_OUTPUT_DIR")
-  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_fmriprep_work_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_qsiprep_"$ANALYSIS_ID"  $(basename "$QSIPREP_OUTPUT_DIR")
+  time zip -q -r "$GEAR_OUTPUT_DIR"/debug_qsiprep_work_"$ANALYSIS_ID" $(basename "$WORKING_DIR")
   chmod -R 777 $GEAR_OUTPUT_DIR
 
   ################################################################################

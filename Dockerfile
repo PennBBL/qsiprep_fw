@@ -2,11 +2,11 @@
 
 ############################
 # Get the fmriprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.3.1
+FROM pennbbl/qsiprep:0.4.4
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
-ENV QSIPREP_VERSION 0.3.3
+ENV QSIPREP_VERSION 0.4.3
 
 ############################
 # Install basic dependencies
