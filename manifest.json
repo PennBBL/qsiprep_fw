@@ -2,10 +2,15 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.13_0.3.3",
+	"version": "0.1.14_0.4.6",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
+		},
+		"eddy_config": {
+			"base": "file",
+			"description": "JSON file with parameters for eddy",
+			"optional": true
 		},
 		"freesurfer_license": {
 			"base": "file",
@@ -46,6 +51,11 @@
 				"Affine"
 			],
 			"type": "string"
+		},
+		"b0_threshold":{
+			"default": 50,
+			"description": "Maximum b value for a b=0 image",
+			"type": "number"
 		},
 		"combine_all_dwis": {
 			"default": true,
@@ -96,12 +106,11 @@
 		},
 		"hmc_model": {
 			"default": "3dSHORE",
-			"description": "model used to generate target images for hmc. If 'none' the non-b0 images will be warped using the same transform as their nearest b0 image. If '3dSHORE', SHORELine will be used. If 'eddy_ingress', the dwis are assumed to have been run through fsls eddy.",
+			"description": "model used to generate target images for hmc. If 'eddy', FSL's eddy is used, if '3dSHORE', SHORELine will be used.",
 			"enum": [
-				"none",
 				"3dSHORE",
-				"eddy_ingress",
-				"eddy"
+				"eddy",
+				"none"
 			],
 			"type": "string"
 		},
