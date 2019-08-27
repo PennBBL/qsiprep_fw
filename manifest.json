@@ -2,7 +2,7 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.14_0.4.6",
+	"version": "0.1.15_0.5.0",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -155,6 +155,22 @@
 			"description": "Space separated list of FOLDERS to retain from the intermediate work directory.",
 			"type": "string"
 		},
+		"intramodal_template_iters": {
+			"default": 0,
+			"description": "Number of iterations for building the intramodal (b=0) template",
+			"type": "integer"
+		},
+		"intramodal_template_transform": {
+			"default": "BSplineSyN",
+			"description": "Transform used for building the intramodal (b=0) template",
+			"enum": [
+				"BSplineSyN",
+				"Rigid",
+				"Affine",
+				"SyN"
+			],
+			"type": "string"
+		},
 		"longitudinal": {
 			"default": false,
 			"description": "Treat dataset as longitudinal - may increase runtime [default=false]",
@@ -227,7 +243,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.14_0.4.6"
+			"image": "pennbbl/qsiprep-fw:0.1.15_0.5.0"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
