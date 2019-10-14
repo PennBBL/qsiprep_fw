@@ -2,7 +2,7 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.15_0.6.0RC1",
+	"version": "0.1.16_0.6.1",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -186,6 +186,22 @@
 			"description": "Volume and surface spaces to resample functional series into. Possible choices (space separated list): T1w, template. T1w: subject anatomical volume. template: normalization target specified by –template.  [default='T1w']",
 			"type": "string"
 		},
+		"recon_builtin": {
+			"default": "",
+			"description": "Use a pre-configured reconstruction workflow",
+			"enum": [
+				"",
+				"dsi_studio_gqi",
+				"mrtrix_msmt_csd",
+				"mrtrix_dhollander",
+				"mrtrix_dhollander_no5tt",
+				"mrtrix_tckglobal",
+				"dipy_3dshore",
+				"dipy_mapmri",
+				"csdsi_3dshore"
+			],
+			"type": "string"
+		},
 		"save_intermediate_work": {
 			"default": false,
 			"description": "Zip and save working directory with intermediate files. [default=false]",
@@ -243,7 +259,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.15_0.6.0RC1"
+			"image": "pennbbl/qsiprep-fw:0.1.16_0.6.1"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}

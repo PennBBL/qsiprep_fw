@@ -80,6 +80,7 @@ config_prefer_dedicated_fmaps="$(parse_config 'prefer_dedicated_fmaps')"
 config_use_syn_sdc="$(parse_config 'use_syn_sdc')"
 config_force_syn="$(parse_config 'force_syn')"
 config_sloppy="$(parse_config 'sloppy')"
+config_recon_builtin="$(parse_config 'recon_builtin')"
 
 
 if [[ $config_ignore == '' ]]; then
@@ -187,10 +188,11 @@ fi
 
 if [[ -n "$RECON_SPEC_FILE" ]]; then
   recon_spec_FLAG='--recon_spec '$RECON_SPEC_FILE
-else
-  recon_spec_FLAG=''
+elif [[ -n "$config_recon_builtin" ]]; then
+  recon_spec_FLAG='--recon_spec '$config_recon_builtin
+else;
+  recon_spec_FLAG=' '
 fi
-
 if [[ -n "$EDDY_CONFIG_FILE" ]]; then
   eddy_config_FLAG='--eddy_config '$EDDY_CONFIG_FILE
 else
