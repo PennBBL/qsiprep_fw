@@ -190,7 +190,7 @@ if [[ -n "$RECON_SPEC_FILE" ]]; then
   recon_spec_FLAG='--recon_spec '$RECON_SPEC_FILE
 elif [[ -n "$config_recon_builtin" ]]; then
   recon_spec_FLAG='--recon_spec '$config_recon_builtin
-else;
+else
   recon_spec_FLAG=' '
 fi
 if [[ -n "$EDDY_CONFIG_FILE" ]]; then
