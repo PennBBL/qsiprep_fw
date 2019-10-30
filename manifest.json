@@ -1,8 +1,8 @@
 {
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
-	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.17_0.6.1",
+	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
+	"version": "0.2.0_0.6.3RC3",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -73,7 +73,7 @@
 			"type": "boolean"
 		},
 		"dwi_denoise_window": {
-			"default": 0,
+			"default": 5,
 			"description": "window size in voxels for ``dwidenoise``. Must be odd. If 0, ``dwidenoise`` will not be run.",
 			"enum": [
 				0,
@@ -105,7 +105,7 @@
 			"type": "boolean"
 		},
 		"hmc_model": {
-			"default": "3dSHORE",
+			"default": "eddy",
 			"description": "model used to generate target images for hmc. If 'eddy', FSL's eddy is used, if '3dSHORE', SHORELine will be used.",
 			"enum": [
 				"3dSHORE",
@@ -259,7 +259,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.17_0.6.1"
+			"image": "pennbbl/qsiprep-fw:0.2.0_0.6.3RC3"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
