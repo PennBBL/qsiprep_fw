@@ -53,7 +53,7 @@
 			"type": "string"
 		},
 		"b0_threshold":{
-			"default": 50,
+			"default": 100,
 			"description": "Maximum b value for a b=0 image",
 			"type": "number"
 		},
