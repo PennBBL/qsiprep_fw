@@ -26,9 +26,8 @@ RUN pip install heudiconv
 # Make directory for flywheel spec (v0)
 ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
-COPY run ${FLYWHEEL}/run
+COPY run.py ${FLYWHEEL}/run.py
 COPY manifest.json ${FLYWHEEL}/manifest.json
-COPY fs_license.py /flywheel/v0/fs_license.py
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
