@@ -212,8 +212,8 @@
 			"description": "Zip and save working directory with intermediate files. [default=false]",
 			"type": "boolean"
 		},
-		"save_outputs": {
-			"default": true,
+		"save_partial_outputs": {
+			"default": false,
 			"description": "Zip and save output directory contents on an algorithm failure. [default=false]",
 			"type": "boolean"
 		},

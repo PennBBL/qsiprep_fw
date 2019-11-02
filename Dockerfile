@@ -2,11 +2,11 @@
 
 ############################
 # Get the qsiprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.6.3RC3
+FROM pennbbl/qsiprep:0.6.3
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
-ENV QSIPREP_VERSION 0.6.3RC3
+ENV QSIPREP_VERSION 0.6.3
 
 ############################
 # Install basic dependencies
@@ -30,7 +30,7 @@ COPY run.py ${FLYWHEEL}/run.py
 COPY manifest.json ${FLYWHEEL}/manifest.json
 
 # Set the entrypoint
-ENTRYPOINT ["/flywheel/v0/run"]
+ENTRYPOINT ["/flywheel/v0/run.py"]
 
 # Add the fmriprep dockerfile to the container
 ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
@@ -38,10 +38,8 @@ ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerf
 
 ############################
 # Copy over python scripts that generate the BIDS hierarchy
-COPY create_archive_fw_heudiconv.py /flywheel/v0/create_archive_fw_heudiconv.py
-COPY move_to_project.py /flywheel/v0/move_to_project.py
 RUN chmod +x ${FLYWHEEL}/*
-RUN pip install fw-heudiconv -U
+RUN pip install --upgrade fw-heudiconv ipython
 
 
 ############################
