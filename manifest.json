@@ -1,8 +1,8 @@
 {
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
-	"description": "qsiprep builds workflows for preprocessing q-space images such as Diffusion Spectrum Images (DSI), multi-shell HARDI and compressed sensing DSI (CS-DSI).",
-	"version": "0.1.17_0.6.1",
+	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
+	"version": "0.2.0_0.6.3",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -53,7 +53,7 @@
 			"type": "string"
 		},
 		"b0_threshold":{
-			"default": 50,
+			"default": 100,
 			"description": "Maximum b value for a b=0 image",
 			"type": "number"
 		},
@@ -73,7 +73,7 @@
 			"type": "boolean"
 		},
 		"dwi_denoise_window": {
-			"default": 0,
+			"default": 5,
 			"description": "window size in voxels for ``dwidenoise``. Must be odd. If 0, ``dwidenoise`` will not be run.",
 			"enum": [
 				0,
@@ -105,7 +105,7 @@
 			"type": "boolean"
 		},
 		"hmc_model": {
-			"default": "3dSHORE",
+			"default": "eddy",
 			"description": "model used to generate target images for hmc. If 'eddy', FSL's eddy is used, if '3dSHORE', SHORELine will be used.",
 			"enum": [
 				"3dSHORE",
@@ -186,6 +186,11 @@
 			"description": "Volume and surface spaces to resample functional series into. Possible choices (space separated list): T1w, template. T1w: subject anatomical volume. template: normalization target specified by –template.  [default='T1w']",
 			"type": "string"
 		},
+		"notrack": {
+			"default": false,
+			"description": "disable error reporting an [default=false]",
+			"type": "boolean"
+		},
 		"recon_builtin": {
 			"default": "",
 			"description": "Use a pre-configured reconstruction workflow",
@@ -207,8 +212,8 @@
 			"description": "Zip and save working directory with intermediate files. [default=false]",
 			"type": "boolean"
 		},
-		"save_outputs": {
-			"default": true,
+		"save_partial_outputs": {
+			"default": false,
 			"description": "Zip and save output directory contents on an algorithm failure. [default=false]",
 			"type": "boolean"
 		},
@@ -248,6 +253,11 @@
 			"default": false,
 			"description": "write a series of voxelwise bvecs [default=false].",
 			"type": "boolean"
+		},
+		"use_all_sessions": {
+			"default": false,
+			"description": "Use all sessions in this project for this subject"
+			"type": "boolean"
 		}
 	},
 	"author": "Matthew Cieslak",
@@ -259,7 +269,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.1.17_0.6.1"
+			"image": "pennbbl/qsiprep-fw:0.2.0_0.6.3"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
