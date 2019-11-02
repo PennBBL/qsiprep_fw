@@ -256,7 +256,7 @@
 		},
 		"use_all_sessions": {
 			"default": false,
-			"description": "Use all sessions in this project for this subject"
+			"description": "Use all sessions in this project for this subject",
 			"type": "boolean"
 		}
 	},
