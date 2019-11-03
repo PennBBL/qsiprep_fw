@@ -268,8 +268,10 @@ def main():
         OK = False
 
     upload_results(failed=not OK)
-    sys.exit(0)
+    if not OK:
+        return 1
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
