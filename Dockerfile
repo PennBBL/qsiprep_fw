@@ -30,7 +30,7 @@ COPY run ${FLYWHEEL}/run
 COPY manifest.json ${FLYWHEEL}/manifest.json
 
 # Set the entrypoint
-ENTRYPOINT ["/flywheel/v0/run.py"]
+ENTRYPOINT ["/flywheel/v0/run"]
 
 # Add the fmriprep dockerfile to the container
 ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
