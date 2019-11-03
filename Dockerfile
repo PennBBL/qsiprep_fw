@@ -38,7 +38,7 @@ ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerf
 
 ############################
 # Copy over python scripts that generate the BIDS hierarchy
-RUN chmod +x ${FLYWHEEL}/*
+RUN chmod a+x ${FLYWHEEL}/*
 RUN pip install --upgrade fw-heudiconv ipython
 
 
