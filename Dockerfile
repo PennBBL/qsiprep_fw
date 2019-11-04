@@ -2,11 +2,11 @@
 
 ############################
 # Get the qsiprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.6.3-1
+FROM pennbbl/qsiprep:0.6.4
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
-ENV QSIPREP_VERSION 0.6.3-1
+ENV QSIPREP_VERSION 0.6.4
 
 ############################
 # Install basic dependencies
@@ -39,7 +39,7 @@ ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerf
 ############################
 # Copy over python scripts that generate the BIDS hierarchy
 RUN chmod a+rx ${FLYWHEEL}/*
-RUN pip install --upgrade fw-heudiconv ipython
+RUN pip install --upgrade 'fw-heudiconv==0.1.4' ipython
 
 
 ############################

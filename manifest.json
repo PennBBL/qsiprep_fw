@@ -2,7 +2,7 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
-	"version": "0.2.3_0.6.3-1",
+	"version": "0.2.5_0.6.4",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -217,6 +217,11 @@
 			"description": "Zip and save output directory contents on an algorithm failure. [default=false]",
 			"type": "boolean"
 		},
+		"skip_bids_validation":{
+			"default": false,
+			"description": "Don't check that the input data is BIDS-compliant. [default=false]",
+			"type": "boolean"
+		},
 		"skull_strip_fixed_seed": {
 			"default": false,
 			"description": "do not use a random seed for skull-stripping - will ensure run-to-run replicability when used with –omp-nthreads 1 [ default = false ]",
@@ -269,7 +274,7 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.2.3_0.6.3-1"
+			"image": "pennbbl/qsiprep-fw:0.2.5_0.6.4"
 		},
     "flywheel":{"suite": "PennBBL"}
 	}
