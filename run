@@ -36,7 +36,7 @@ echo -e "$CONTAINER END QSIPREP DOCKERFILE \n"
 # Download BIDS data and write a command
 /usr/local/miniconda/bin/python /flywheel/v0/prepare_run.py
 PREPARATION_EXIT_STATUS=$?
-if [[$PREPARATION_EXIT_STATUS -gt 0]]; then
+if [[ $PREPARATION_EXIT_STATUS -gt 0 ]]; then
   echo "$CONTAINER Unable to download BIDS data! Exiting"
   exit 1
 fi
