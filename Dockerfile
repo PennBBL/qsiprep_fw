@@ -21,26 +21,23 @@ RUN apt-get update && apt-get -y install \
 # Install the Flywheel SDK
 RUN pip install flywheel-sdk
 RUN pip install heudiconv
+RUN pip install --upgrade 'fw-heudiconv==0.1.4' ipython
 
 ############################
 # Make directory for flywheel spec (v0)
 ENV FLYWHEEL /flywheel/v0
 RUN mkdir -p ${FLYWHEEL}
 COPY run ${FLYWHEEL}/run
+COPY prepare_run.py ${FLYWHEEL}/prepare_run.py
+COPY move_to_project.py ${FLYWHEEL}/move_to_project.py
 COPY manifest.json ${FLYWHEEL}/manifest.json
+RUN chmod a+rx ${FLYWHEEL}/*
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
 
 # Add the fmriprep dockerfile to the container
 ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
-
-
-############################
-# Copy over python scripts that generate the BIDS hierarchy
-RUN chmod a+rx ${FLYWHEEL}/*
-RUN pip install --upgrade 'fw-heudiconv==0.1.4' ipython
-
 
 ############################
 # ENV preservation for Flywheel Engine
