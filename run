@@ -11,6 +11,7 @@ BIDS_DIR=$OUTPUT_DIR/BIDS/bids_dataset
 CONTAINER='[flywheel/qsiprep]'
 
 # CRITICAL: re-create the environment
+cat ${FLYWHEEL_BASE}/docker-env.sh
 source ${FLYWHEEL_BASE}/docker-env.sh
 
 function parse_config {
