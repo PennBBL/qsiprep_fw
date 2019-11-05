@@ -10,6 +10,9 @@ WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 BIDS_DIR=$OUTPUT_DIR/BIDS/bids_dataset
 CONTAINER='[flywheel/qsiprep]'
 
+# CRITICAL: re-create the environment
+source ${FLYWHEEL_BASE}/docker-env.sh
+
 function parse_config {
 
   CONFIG_FILE=$FLYWHEEL_BASE/config.json
@@ -24,7 +27,7 @@ function parse_config {
 }
 
 
-config_save_outputs="$(parse_config 'save_outputs')"
+config_save_outputs="$(parse_config 'save_partial_outputs')"
 config_save_intermediate_work="$(parse_config 'save_intermediate_work')"
 config_intermediate_files="$(parse_config 'intermediate_files')"
 config_intermediate_folders="$(parse_config 'intermediate_folders')"
