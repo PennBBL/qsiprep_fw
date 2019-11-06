@@ -1,5 +1,5 @@
 {
-	"name": "qsiprep-fw",
+	"name": "qsiprep-fw-hpc",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
 	"version": "0.3.4_0.6.4",
@@ -263,7 +263,32 @@
 			"default": false,
 			"description": "Use all sessions in this project for this subject",
 			"type": "boolean"
-		}
+		},
+    "sge-cpu": {
+      "type": "string",
+      "default": "8",
+      "description": "[SGE] How many cores to request. This is used for the underlying '-pe threaded' option."
+    },
+    "sge-ram": {
+      "type": "string",
+      "default": "64G",
+      "description": "[SGE] How much RAM to request. This is used for the underlying '-l h_vmem' option."
+    },
+    "sge-short": {
+      "type": "boolean",
+      "default": false,
+      "description": "[SGE] Tell the cluster this is a short job. This caps the job to 90 minutes wall-clock and 15 minutes of CPU."
+    },
+    "singularity-debug": {
+      "type": "boolean",
+      "default": false,
+      "description": "[Singularity] Enable verbose logging."
+    },
+    "singularity-writable": {
+      "type": "boolean",
+      "default": false,
+      "description": "[Singularity] Mount the container as writable."
+    }
 	},
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
@@ -274,8 +299,8 @@
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.3.4_0.6.4"
+			"image": "pennbbl/qsiprep-fw-hpc:0.3.4_0.6.4"
 		},
-    "flywheel":{"suite": "PennBBL"}
+    "flywheel":{"suite": "Runs on HPC [Experimental]"}
 	}
 }
