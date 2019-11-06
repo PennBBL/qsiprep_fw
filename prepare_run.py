@@ -32,9 +32,8 @@ with flywheel.GearContext() as context:
     gear_output_dir = PosixPath(context.output_dir)
     qsiprep_script = gear_output_dir / "qsiprep_run.sh"
     output_root = gear_output_dir / analysis_id
-    output_dir = output_root / "derivatives"
     working_dir = PosixPath(str(output_root.resolve()) + "_work")
-    bids_dir = output_root / "BIDS"
+    bids_dir = output_root
     bids_root = bids_dir / 'bids_dataset'
     # Get relevant container objects
     fw = flywheel.Client(context.get_input('api_key')['key'])
@@ -78,7 +77,7 @@ def write_qsiprep_command():
             '--hmc-model', config.get('hmc_model', 'eddy'),
             '--hmc-transform', config.get('hmc_transform', 'Affine'),
             '-w', str(working_dir),
-            '--output-dir', str(output_dir),
+            '--output-dir', str(output_root),
             '--output-resolution', str(config.get('output_resolution')),
             '--output-space', config.get('output_space'),
             '--run-uuid', analysis_id,
@@ -200,7 +199,7 @@ def fw_heudiconv_download():
 
 
 def create_html_zip():
-    html_root = output_dir / "qsiprep"
+    html_root = output_root / "qsiprep"
     html_files = list(html_root.glob("sub-*html"))
     if not html_files:
         logger.warning("No html files found!")
@@ -216,11 +215,11 @@ def create_html_zip():
 
 def create_derivatives_zip(failed):
     output_fname = debug_derivatives_zipfile if failed else derivatives_zipfile
-    derivatives_files = list(output_dir.glob("**/*"))
+    derivatives_files = list(output_root.glob("**/*"))
     with ZipFile(str(output_fname), "w") as zipf:
         for derivative_f in derivatives_files:
             zipf.write(str(derivative_f),
-                       str(derivative_f.relative_to(output_dir)))
+                       str(derivative_f.relative_to(output_root)))
 
 
 def create_workingdir_zip():
