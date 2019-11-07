@@ -86,7 +86,7 @@ def write_qsiprep_command():
         #     cmd += ['--acquisition_type', acquisition_type]
         # If on HPC, get the cores/memory limits
         if config.get('sge-cpu'):
-            cmd += ['--n_cpus', str(max(1, config.get('sge-cpu')-1))]
+            cmd += ['--n_cpus', str(max(1, int(config.get('sge-cpu'))-1))]
         if config.get('combine_all_dwis', False):
             cmd.append('--combine_all_dwis')
         if config.get('denoise_before_combining', False):
