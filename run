@@ -50,6 +50,8 @@ time bash /flywheel/v0/output/qsiprep_run.sh
 
 QSIPREP_EXITSTATUS=$?
 
+rm -rf ${BIDS_DIR}
+
 if [[ $QSIPREP_EXITSTATUS == 0 ]] ; then
 
   # Convert index to standalone zip archive
