@@ -2,11 +2,11 @@
 	"name": "qsiprep-fw-hpc",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
-	"version": "0.3.8_0.6.4",
+	"version": "0.3.9_0.6.4-1",
 	"custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw-hpc:0.3.8_0.6.4"
+			"image": "pennbbl/qsiprep-fw-hpc:0.3.9_0.6.4-1"
 		},
     "flywheel":{"suite": "Runs on HPC [Experimental]"}
 	},
@@ -62,7 +62,7 @@
 		"b0_threshold":{
 			"default": 100,
 			"description": "Maximum b value for a b=0 image",
-			"type": "number"
+			"type": "integer"
 		},
 		"combine_all_dwis": {
 			"default": true,
@@ -300,7 +300,7 @@
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
 	"cite": "github.com/pennbbl/qsiprep",
-	"license": "Other",
+	"license": "BSD 3-Clause",
 	"source": "https://github.com/pennbbl/qsiprep_fw",
 	"url": "https://qsiprep.readthedocs.io/"
 }

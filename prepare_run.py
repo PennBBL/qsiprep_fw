@@ -65,19 +65,19 @@ def write_qsiprep_command():
     with flywheel.GearContext() as context:
         cmd = [
             '/usr/local/miniconda/bin/qsiprep',
+            str(bids_root),
+            str(output_root),
+            'participant',
             '--stop_on_first_crash', '-v', '-v',
-            '--analysis_level', 'participant',
             # anat_only=False,
             '--b0-motion-corr-to', config.get('b0_motion_corr_to', 'iterative'),
-            '--b0_threshold', str(config.get('b0_threshold', 100)),
+            '--b0_threshold', str(int(config.get('b0_threshold', 100))),
             '--b0_to_t1w_transform', 'Rigid',
-            '--bids_dir', str(bids_root),
             '--dwi-denoise-window', str(config.get('dwi_denoise_window', 5)),
             '--fs-license-file', context.get_input_path('freesurfer_license'),
             '--hmc-model', config.get('hmc_model', 'eddy'),
             '--hmc-transform', config.get('hmc_transform', 'Affine'),
             '-w', str(working_dir),
-            '--output-dir', str(output_root),
             '--output-resolution', str(config.get('output_resolution')),
             '--output-space', config.get('output_space'),
             '--run-uuid', analysis_id,
@@ -245,7 +245,9 @@ def main():
     command_ok = write_qsiprep_command()
     if not command_ok:
         logger.warning("Critical error while trying to write QSIPrep command.")
-        return upload_results(failed=True)
+        return 1
+
+    return 0
 
 
 
