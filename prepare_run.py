@@ -238,11 +238,15 @@ def create_workingdir_zip():
 def main():
 
     download_ok = fw_heudiconv_download()
+    sys.stdout.flush()
+    sys.stderr.flush()
     if not download_ok:
         logger.warning("Critical error while trying to download BIDS data.")
         return 1
 
     command_ok = write_qsiprep_command()
+    sys.stdout.flush()
+    sys.stderr.flush()
     if not command_ok:
         logger.warning("Critical error while trying to write QSIPrep command.")
         return 1

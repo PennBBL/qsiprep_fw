@@ -8,6 +8,7 @@ GEAR_OUTPUT_DIR=$FLYWHEEL_BASE/output
 QSIPREP_OUTPUT_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"
 WORKING_DIR=$GEAR_OUTPUT_DIR/"$ANALYSIS_ID"_work
 BIDS_DIR=$GEAR_OUTPUT_DIR/bids_dataset
+EXE_SCRIPT=$GEAR_OUTPUT_DIR/qsiprep_run.sh
 CONTAINER='[flywheel/qsiprep]'
 
 # CRITICAL: re-create the environment
@@ -38,10 +39,10 @@ cat ${FLYWHEEL_BASE}/*Dockerfile
 echo -e "$CONTAINER END QSIPREP DOCKERFILE \n"
 
 # Download BIDS data and write a command
-/usr/local/miniconda/bin/python /flywheel/v0/prepare_run.py
-PREPARATION_EXIT_STATUS=$?
-if [[ $PREPARATION_EXIT_STATUS -gt 0 ]]; then
-  echo "$CONTAINER Unable to download BIDS data! Exiting"
+timeout 30m /usr/local/miniconda/bin/python /flywheel/v0/prepare_run.py
+
+if [[ ! -f $EXE_SCRIPT ]]; then
+  echo "$CONTAINER Unable to create QSIPrep run environment! Exiting"
   exit 1
 fi
 
