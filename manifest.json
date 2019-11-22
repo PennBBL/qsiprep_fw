@@ -6,7 +6,7 @@
   "custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw-hpc:0.3.12_0.6.5"
+			"image": "pennbbl/qsiprep-fw:0.3.12_0.6.5"
 		},
     "flywheel":{"suite": "PennBBL"}
   },
