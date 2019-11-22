@@ -7,7 +7,8 @@
 		"gear-builder": {
 			"category": "analysis",
 			"image": "pennbbl/qsiprep-fw-hpc:0.3.11_0.6.5"
-		},
+		}
+  },
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
 	"cite": "github.com/pennbbl/qsiprep",
@@ -274,5 +275,6 @@
 			"default": false,
 			"description": "Use all sessions in this project for this subject",
 			"type": "boolean"
-	}
+	  }
+  }
 }
