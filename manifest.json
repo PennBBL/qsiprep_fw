@@ -2,14 +2,20 @@
 	"name": "qsiprep-fw-hpc",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
-	"version": "0.3.10_0.6.4-1",
-	"custom": {
+	"version": "0.3.12_0.6.5",
+  "custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw-hpc:0.3.10_0.6.4-1"
+			"image": "pennbbl/qsiprep-fw-hpc:0.3.12_0.6.5"
 		},
     "flywheel":{"suite": "Runs on HPC [Experimental]"}
-	},
+  },
+	"author": "Matthew Cieslak",
+	"maintainer": "Matthew Cieslak",
+	"cite": "github.com/pennbbl/qsiprep",
+	"license": "BSD-3-Clause",
+	"source": "https://github.com/pennbbl/qsiprep_fw",
+	"url": "https://qsiprep.readthedocs.io/",
 	"inputs": {
 		"api_key": {
 			"base": "api-key"
@@ -296,11 +302,5 @@
       "default": false,
       "description": "[Singularity] Mount the container as writable."
     }
-	},
-	"author": "Matthew Cieslak",
-	"maintainer": "Matthew Cieslak",
-	"cite": "github.com/pennbbl/qsiprep",
-	"license": "BSD-3-Clause",
-	"source": "https://github.com/pennbbl/qsiprep_fw",
-	"url": "https://qsiprep.readthedocs.io/"
+	}
 }
