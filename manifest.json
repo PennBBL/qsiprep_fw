@@ -2,12 +2,13 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
-	"version": "0.3.11_0.6.5",
+	"version": "0.3.12_0.6.5",
   "custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw-hpc:0.3.11_0.6.5"
-		}
+			"image": "pennbbl/qsiprep-fw-hpc:0.3.12_0.6.5"
+		},
+    "flywheel":{"suite": "PennBBL"}
   },
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
