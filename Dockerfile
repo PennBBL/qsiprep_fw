@@ -23,9 +23,12 @@ RUN pip install flywheel-sdk
 RUN pip install heudiconv
 RUN pip install --upgrade 'fw-heudiconv==0.1.8' ipython
 
+
 ############################
 # Make directory for flywheel spec (v0)
 ENV FLYWHEEL /flywheel/v0
+# Add the qsiprep dockerfile to the container
+ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
 RUN mkdir -p ${FLYWHEEL}
 COPY run ${FLYWHEEL}/run
 COPY prepare_run.py ${FLYWHEEL}/prepare_run.py
@@ -35,9 +38,6 @@ RUN chmod a+rx ${FLYWHEEL}/*
 
 # Set the entrypoint
 ENTRYPOINT ["/flywheel/v0/run"]
-
-# Add the fmriprep dockerfile to the container
-ADD https://raw.githubusercontent.com/PennBBL/qsiprep/${QSIPREP_VERSION}/Dockerfile ${FLYWHEEL}/qsiprep_${QSIPREP_VERSION}_Dockerfile
 
 ############################
 # ENV preservation for Flywheel Engine
