@@ -55,7 +55,7 @@
 		"b0_threshold":{
 			"default": 100,
 			"description": "Maximum b value for a b=0 image",
-			"type": "number"
+			"type": "integer"
 		},
 		"combine_all_dwis": {
 			"default": true,
@@ -263,19 +263,11 @@
 			"default": false,
 			"description": "Use all sessions in this project for this subject",
 			"type": "boolean"
-		}
 	},
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
 	"cite": "github.com/pennbbl/qsiprep",
-	"license": "Other",
+	"license": "BSD-3-Clause",
 	"source": "https://github.com/pennbbl/qsiprep_fw",
-	"url": "https://qsiprep.readthedocs.io/",
-	"custom": {
-		"gear-builder": {
-			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.3.4_0.6.4"
-		},
-    "flywheel":{"suite": "PennBBL"}
-	}
+	"url": "https://qsiprep.readthedocs.io/"
 }

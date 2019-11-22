@@ -65,19 +65,19 @@ def write_qsiprep_command():
     with flywheel.GearContext() as context:
         cmd = [
             '/usr/local/miniconda/bin/qsiprep',
+            str(bids_root),
+            str(output_root),
+            'participant',
             '--stop_on_first_crash', '-v', '-v',
-            '--analysis_level', 'participant',
             # anat_only=False,
             '--b0-motion-corr-to', config.get('b0_motion_corr_to', 'iterative'),
-            '--b0_threshold', str(config.get('b0_threshold', 100)),
+            '--b0_threshold', str(int(config.get('b0_threshold', 100))),
             '--b0_to_t1w_transform', 'Rigid',
-            '--bids_dir', str(bids_root),
             '--dwi-denoise-window', str(config.get('dwi_denoise_window', 5)),
             '--fs-license-file', context.get_input_path('freesurfer_license'),
             '--hmc-model', config.get('hmc_model', 'eddy'),
             '--hmc-transform', config.get('hmc_transform', 'Affine'),
             '-w', str(working_dir),
-            '--output-dir', str(output_root),
             '--output-resolution', str(config.get('output_resolution')),
             '--output-space', config.get('output_space'),
             '--run-uuid', analysis_id,
@@ -86,7 +86,9 @@ def write_qsiprep_command():
         #     cmd += ['--acquisition_type', acquisition_type]
         # If on HPC, get the cores/memory limits
         if config.get('sge-cpu'):
-            cmd += ['--n_cpus', str(max(1, config.get('sge-cpu')-1))]
+            # Parse SGE cpu syntax, such as "4-8" or just "4"
+            cpuMin = int(config.get('sge-cpu').split('-')[0])
+            cmd += ['--n_cpus', str(max(1, cpuMin - 1))]
         if config.get('combine_all_dwis', False):
             cmd.append('--combine_all_dwis')
         if config.get('denoise_before_combining', False):
@@ -236,14 +238,20 @@ def create_workingdir_zip():
 def main():
 
     download_ok = fw_heudiconv_download()
+    sys.stdout.flush()
+    sys.stderr.flush()
     if not download_ok:
         logger.warning("Critical error while trying to download BIDS data.")
         return 1
 
     command_ok = write_qsiprep_command()
+    sys.stdout.flush()
+    sys.stderr.flush()
     if not command_ok:
         logger.warning("Critical error while trying to write QSIPrep command.")
-        return upload_results(failed=True)
+        return 1
+
+    return 0
 
 
 
