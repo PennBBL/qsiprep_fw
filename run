@@ -51,7 +51,7 @@ time bash /flywheel/v0/output/qsiprep_run.sh
 
 QSIPREP_EXITSTATUS=$?
 
-rm -rf ${BIDS_DIR}
+rm -rf ${QSIPREP_OUTPUT_DIR}/bids_dataset
 
 if [[ $QSIPREP_EXITSTATUS == 0 ]] ; then
 
