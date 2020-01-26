@@ -2,11 +2,11 @@
 	"name": "qsiprep-fw",
 	"label": "QSIPREP: workflows for preprocessing and reconstructing q-space images",
 	"description": "qsiprep builds workflows for preprocessing diffusion MRI such as Diffusion Spectrum Images (DSI), multi-shell HARDI, compressed sensing DSI (CS-DSI) and DTI.",
-	"version": "0.3.13_0.6.5",
+	"version": "0.3.14_0.7.0",
   "custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fw:0.3.13_0.6.5"
+			"image": "pennbbl/qsiprep-fw:0.3.14_0.7.0"
 		},
     "flywheel":{"suite": "PennBBL"}
   },
@@ -96,6 +96,11 @@
 				9
 			],
 			"type": "integer"
+		},
+		"dwi_no_biascorr": {
+			"default": false,
+			"description": "skip b0-based dwi spatial bias correction",
+			"type": "boolean"
 		},
 		"fmap_bspline": {
 			"default": false,
@@ -204,6 +209,11 @@
 			"description": "disable error reporting an [default=false]",
 			"type": "boolean"
 		},
+		"no_b0_harmonization": {
+			"default": false,
+			"description": "skip re-scaling dwi scans to have matching b=0 intensities",
+			"type": "boolean"
+		},
 		"recon_builtin": {
 			"default": "",
 			"description": "Use a pre-configured reconstruction workflow",
@@ -261,6 +271,12 @@
 				"MNI152NLin2009cAsym"
 			],
 			"type": "string"
+		},
+		"unringing_method": {
+				"default": "",
+				"description": "Method for Gibbs-ringing removal.",
+				"enum": ["", "mrdegibbs"],
+				"type": "string"
 		},
 		"use_syn_sdc": {
 			"default": false,

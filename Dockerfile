@@ -2,7 +2,7 @@
 
 ############################
 # Get the qsiprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.6.5
+FROM pennbbl/qsiprep:0.7.0
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get -y install \
 # Install the Flywheel SDK
 RUN pip install flywheel-sdk
 RUN pip install heudiconv
-RUN pip install --upgrade 'fw-heudiconv==0.1.8' ipython
+RUN pip install --upgrade fw-heudiconv ipython
 
 
 ############################
