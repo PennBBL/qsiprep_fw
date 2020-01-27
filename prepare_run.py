@@ -138,6 +138,12 @@ def write_qsiprep_command():
             cmd.append('--use-syn-sdc')
         if config.get('write_local_bvecs'):
             cmd.append('--write-local-bvecs')
+        if config.get('unringing_method'):
+            cmd += ['--unringing-method', config.get('unringing_method')]
+        if config.get('no_b0_harmonization'):
+            cmd += ['--no-b0-harmonization']
+        if config.get('dwi_no_biascorr'):
+            cmd += ['dwi_no_biascorr']
     logger.info(' '.join(cmd))
     with qsiprep_script.open('w') as f:
         f.write(' '.join(cmd))
