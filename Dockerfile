@@ -2,11 +2,11 @@
 
 ############################
 # Get the qsiprep algorithm from DockerHub
-FROM pennbbl/qsiprep:0.7.1
+FROM pennbbl/qsiprep:0.7.2
 
 MAINTAINER Matt Cieslak <matthew.cieslak@pennmedicine.upenn.edu>
 
-ENV QSIPREP_VERSION 0.6.5
+ENV QSIPREP_VERSION 0.7.2
 
 ############################
 # Install basic dependencies
