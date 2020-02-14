@@ -6,7 +6,7 @@
   "custom": {
 		"gear-builder": {
 			"category": "analysis",
-			"image": "pennbbl/qsiprep-fwi-hpc:0.3.16_0.8.0RC2"
+			"image": "pennbbl/qsiprep-fw-hpc:0.3.16_0.8.0RC2"
 		},
     "flywheel":{"suite": "Runs on HPC [Experimental]"}
   },
