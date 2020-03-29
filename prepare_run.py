@@ -1,14 +1,10 @@
 #!/usr/local/miniconda/bin/python
 import sys
 import logging
-import shutil
 from zipfile import ZipFile
-from unittest import mock
-import argparse
 from pathlib import PosixPath
 from fw_heudiconv.cli import export
 import flywheel
-from qsiprep.cli import run as qsiprep_run
 
 # logging stuff
 logging.basicConfig(level=logging.INFO)

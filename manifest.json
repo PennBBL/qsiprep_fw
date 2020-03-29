@@ -317,6 +317,11 @@
       "type": "boolean",
       "default": false,
       "description": "[Singularity] Mount the container as writable."
+    },
+		"timeout":{
+      "description": "Maximum number of days that fmriprep can run",
+      "type": "number",
+      "default": 2
     }
 	}
 }
