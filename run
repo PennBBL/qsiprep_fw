@@ -47,7 +47,7 @@ if [[ ! -f $EXE_SCRIPT ]]; then
 fi
 
 # RUN QSIPREP
-timeout ${config_timeout_days}d time bash /flywheel/v0/output/qsiprep_run.sh
+timeout ${config_timeout_days}d bash /flywheel/v0/output/qsiprep_run.sh
 
 QSIPREP_EXITSTATUS=$?
 
