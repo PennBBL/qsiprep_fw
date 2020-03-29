@@ -8,7 +8,7 @@
 			"category": "analysis",
 			"image": "pennbbl/qsiprep-fw-hpc:0.3.16_0.8.0"
 		},
-    "flywheel":{"suite": "PennBBL"}
+    "flywheel":{"suite": "Runs on HPC [Experimental]"}
   },
 	"author": "Matthew Cieslak",
 	"maintainer": "Matthew Cieslak",
