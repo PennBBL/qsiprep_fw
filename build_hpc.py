@@ -9,6 +9,7 @@ with open('manifest.json', 'r') as gcp_manifest_file:
     gcp_manifest = gcp_manifest_file.read()
 
 new_gear_name = gcp_manifest.replace('"qsiprep-fw"', '"qsiprep-fw-hpc"')
+new_gear_name = new_gear_name.replace('qsiprep-fw:', 'qsiprep-fw-hpc:')
 new_gear_source = new_gear_name.replace('"PennBBL"', '"Runs on HPC [Experimental]"')
 
 with open('manifest.json', 'w') as hpc_manifest_file:

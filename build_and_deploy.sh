@@ -10,6 +10,7 @@ git checkout hpc
 git merge master 
 git checkout --theirs manifest.json
 python build_hpc.py
+git add manifest.json
 git commit -m 'update hpc'
 git push origin hpc
 IMAGENAME=$(cat manifest.json | grep \"image\": | sed 's/^.*"image": "\(.*\)".*/\1/')
