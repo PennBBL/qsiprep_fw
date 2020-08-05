@@ -87,6 +87,8 @@ def write_qsiprep_command():
             cmd += ['--n_cpus', str(max(1, cpuMin - 1))]
         if config.get('combine_all_dwis', False):
             cmd.append('--combine_all_dwis')
+        if not config.get('distortion_group_merge', 'none') == 'none':
+            cmd += ['--distortion-group-merge', config.get('distortion_group_merge')]
         if config.get('denoise_before_combining', False):
             cmd.append('--denoise-before-combining')
         if config.get('do_reconall', False):
